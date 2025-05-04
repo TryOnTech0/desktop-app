@@ -28,12 +28,12 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_4">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout" name="mainLayout">
       <property name="sizeConstraint">
        <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
       </property>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="leftPanel" native="true">
         <widget class="QWidget" name="verticalLayoutWidget">
          <property name="geometry">
           <rect>
@@ -43,7 +43,7 @@
            <height>621</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayoutLeft">
+         <layout class="QVBoxLayout" name="verticalLayoutLeft" stretch="0,0,0">
           <property name="spacing">
            <number>0</number>
           </property>
@@ -91,7 +91,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="leftWidget" native="true">
+       <widget class="QWidget" name="rightPanel" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
           <horstretch>0</horstretch>
@@ -107,9 +107,15 @@
            <height>621</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="rightLayout">
           <item alignment="Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop">
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="label_right">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Model View</string>
             </property>

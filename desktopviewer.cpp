@@ -21,41 +21,49 @@ DesktopViewer::~DesktopViewer() {
 
 
 void DesktopViewer::initializeUI() {
-    // Merkezi widget ayarla
+    // Merkezi widget
     QWidget *centralWidget = new QWidget(this);
     QHBoxLayout *mainLayout = new QHBoxLayout(centralWidget);
 
-    // Sol kısım: Model listesi ve yenile butonu
+    // Sol panel: Model Listesi
     QVBoxLayout *leftLayout = new QVBoxLayout();
     QLabel *labelLeft = new QLabel("Model List", this);
     labelLeft->setAlignment(Qt::AlignCenter);
-    modelList->setSelectionMode(QAbstractItemView::SingleSelection);  // Kullanıcı tek bir model seçebilsin
-    btnRefresh->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);  // Buton boyutlarını ayarla
+    modelList->setSelectionMode(QAbstractItemView::SingleSelection);
+    modelList->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    btnRefresh->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     leftLayout->addWidget(labelLeft);
     leftLayout->addWidget(modelList);
     leftLayout->addWidget(btnRefresh);
-    leftLayout->addStretch(1); // Buton ve liste arasında boşluk bırak
+    leftLayout->addStretch();
 
-    // Sağ kısım: OpenGL viewport
+    // Sağ panel: OpenGL Model Görüntüleyici
     QVBoxLayout *rightLayout = new QVBoxLayout();
     QLabel *labelRight = new QLabel("Model Viewer", this);
     labelRight->setAlignment(Qt::AlignCenter);
+    viewport->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     rightLayout->addWidget(labelRight);
     rightLayout->addWidget(viewport);
 
-    // Ana layout'a yerleştir
+    // Ana layout'a ekle
     mainLayout->addLayout(leftLayout);
     mainLayout->addLayout(rightLayout);
+
+    // Stretch oranlarını layoutlar eklendikten sonra ayarla
+    mainLayout->setStretch(0, 3); // Sol taraf %30
+    mainLayout->setStretch(1, 7); // Sağ taraf %70
 
     // Merkezi widget'ı ayarla
     setCentralWidget(centralWidget);
     setWindowTitle("Desktop Garment Viewer");
 
-    // Buton ve model listesi için slot bağlantıları
+    // Slot bağlantıları
     connect(modelList, &QListWidget::itemClicked, this, &DesktopViewer::onModelSelected);
     connect(btnRefresh, &QPushButton::clicked, this, &DesktopViewer::onRefreshClicked);
 }
+
 
 void DesktopViewer::onModelSelected(QListWidgetItem *item) {
     clearScene();
