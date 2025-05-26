@@ -1,6 +1,8 @@
 #ifndef DESKTOPVIEWER_H
 #define DESKTOPVIEWER_H
-
+#include <QDir>
+#include <QFileInfo>
+#include <QCoreApplication>
 #include <QMainWindow>
 #include <QListWidget>
 #include <QPushButton>

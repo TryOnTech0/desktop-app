@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QDir>
 
 DesktopViewer::DesktopViewer(QWidget *parent)
     : QMainWindow(parent),
@@ -55,15 +56,45 @@ void DesktopViewer::clearScene()
 
 void DesktopViewer::onModelSelected(QListWidgetItem *item)
 {
-    const QString name=item->text();
-    setWindowTitle("Seçilen Model: "+name);
-    viewport->loadModel(name);
+    const QString name = item->text();
+    printf("Model seçildi: %s\n", name.toStdString().c_str());
+    fflush(stdout);
+    
+    setWindowTitle("Seçilen Model: " + name);
+    
+    bool result = viewport->loadModel(name);
+    printf("Model yükleme sonucu: %s\n", result ? "BAŞARILI" : "BAŞARISIZ");
+    fflush(stdout);
 }
 
 void DesktopViewer::onRefreshClicked()
 {
+    printf("=== Yenile butonuna basıldı ===\n");
+    fflush(stdout);
+    
     modelList->clear();
-    modelList->addItem("example_cube.obj");
-    modelList->addItem("sample_sweater.glb");
+    
+    QDir dir(".");
+    QStringList filters;
+    filters << "*.obj" << "*.glb" << "*.fbx";
+    
+    QFileInfoList files = dir.entryInfoList(filters, QDir::Files);
+    
+    printf("Tarama dizini: %s\n", dir.absolutePath().toStdString().c_str());
+    printf("Bulunan dosya sayısı: %lld\n", (long long)files.size());
+    fflush(stdout);
+    
+    for(const QFileInfo &file : files) {
+        printf("Dosya ekleniyor: %s (%.2f KB)\n", 
+               file.fileName().toStdString().c_str(),
+               file.size() / 1024.0);
+        modelList->addItem(file.fileName());
+        fflush(stdout);
+    }
+    
+    if(modelList->count() == 0) {
+        modelList->addItem("Hiç model dosyası bulunamadı");
+        printf("Hiç model dosyası bulunamadı!\n");
+        fflush(stdout);
+    }
 }
-
