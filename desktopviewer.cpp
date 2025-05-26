@@ -22,25 +22,30 @@ void DesktopViewer::initializeUI()
 {
     QWidget *central = new QWidget(this);
     QHBoxLayout *main = new QHBoxLayout(central);
+    
+    // Kenar boşluklarını azalt
+    main->setContentsMargins(5, 5, 5, 5);
+    main->setSpacing(5);
 
-    // left
+    // Left panel
     QVBoxLayout *left = new QVBoxLayout;
     QLabel *labLeft = new QLabel("Model List", this);
     labLeft->setAlignment(Qt::AlignCenter);
+    labLeft->setMaximumHeight(25);
+    
     left->addWidget(labLeft);
     left->addWidget(modelList);
     left->addWidget(btnRefresh);
-    left->addStretch();
+    left->setContentsMargins(0, 0, 0, 0);
 
-    // right
+    // Right panel
     QVBoxLayout *right = new QVBoxLayout;
-    QLabel *labRight = new QLabel("Model Viewer", this);
-    labRight->setAlignment(Qt::AlignCenter);
-    right->addWidget(labRight);
     right->addWidget(viewport);
+    right->setContentsMargins(0, 0, 0, 0);
 
-    main->addLayout(left,3);
-    main->addLayout(right,7);
+    // Sol alanı 2 katına çıkar: 2'den 4'e
+    main->addLayout(left, 4);   // Sol panel (4 birim - önceden 2'ydi)
+    main->addLayout(right, 8);  // Sağ panel (8 birim aynı)
 
     setCentralWidget(central);
     setWindowTitle("Desktop Garment Viewer");

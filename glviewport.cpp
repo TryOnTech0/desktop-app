@@ -27,7 +27,7 @@ void GLViewport::initializeGL()
         "}");
 
     // Texture'lı fragment shader
-    shader.addShaderFromSourceCode(QOpenGLShader::Fragment,
+    bool fragmentOK = shader.addShaderFromSourceCode(QOpenGLShader::Fragment,
     "#version 330 core\n"
     "in vec2 TexCoord;"
     "in vec3 Normal;"
@@ -36,16 +36,25 @@ void GLViewport::initializeGL()
     "uniform bool hasTexture;"
     "void main(){"
     "    if(hasTexture) {"
-    "        vec4 texColor = texture(ourTexture, TexCoord);"
-    "        if(texColor.a < 0.1) discard;" // Alpha testing
-    "        frag = texColor;"
+    "        frag = texture(ourTexture, TexCoord);"
     "    } else {"
-    "        // Basit lighting"
+    "        // Daha gerçekçi lighting"
+    "        vec3 lightColor = vec3(1.0, 1.0, 1.0);"
     "        vec3 lightDir = normalize(vec3(0.5, 1.0, 0.3));"
     "        vec3 norm = normalize(Normal);"
-    "        float diff = max(dot(norm, lightDir), 0.3);"
-    "        vec3 color = vec3(0.8, 0.8, 1.0) * diff;"
-    "        frag = vec4(color, 1.0);"
+    "        "
+    "        // Ambient lighting (çevre ışığı)"
+    "        float ambient = 0.4;"
+    "        "
+    "        // Diffuse lighting (dağınık ışık)"
+    "        float diff = max(dot(norm, lightDir), 0.0);"
+    "        "
+    "        // Materyal rengi (beyaz yerine daha doğal)"
+    "        vec3 materialColor = vec3(0.7, 0.6, 0.5);" // Bej/ten rengi
+    "        "
+    "        // Final renk hesaplama"
+    "        vec3 result = (ambient + diff) * lightColor * materialColor;"
+    "        frag = vec4(result, 1.0);"
     "    }"
     "}");
 
@@ -82,7 +91,10 @@ void GLViewport::updateView()
 
 void GLViewport::paintGL()
 {
+    // Güzel bir arka plan rengi (koyu gri-mavi)
+    glClearColor(0.2f, 0.3f, 0.4f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     if(indexCount == 0) return;
 
     updateView();
