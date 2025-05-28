@@ -32,12 +32,15 @@ protected:
 private:
     void updateView();
     void uploadMesh(const aiMesh *mesh);
+    void uploadAllMeshes(const aiScene *scene);
     void calculateBoundingBox(const aiMesh *mesh);
     void resetCamera();
     bool loadTexture(const QString &texturePath);
     void loadMaterialTextures(const aiScene *scene, const QString &modelDir);
+    void calculateBoundingBoxForScene(const aiScene *scene);
     bool loadEmbeddedTexture(const aiTexture* aiTex);
-
+    void checkTextureStatus();
+    
     QOpenGLShaderProgram shader;
     GLuint vao=0, vbo=0, ebo=0;
     GLuint textureID = 0;
